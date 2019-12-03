@@ -1,4 +1,4 @@
-package ie.gmit.phone;
+package ie.gmit.mypackage;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +16,6 @@ public class PhoneManager implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    // Declare a List called students to hold the student objects
 	private List<Phone> phoneList;
 
 	// Constructor
@@ -64,7 +63,7 @@ public class PhoneManager implements Serializable {
 
 	public boolean deletePhoneById(String phoneId) {
 		// Search for the Phone by ID
-		Phone phone = findPhoneById(phoneId);
+		Phone phone = searchForPhoneById(phoneId);
 		// If a Phone was found then delete the phone
 		if (phone != null) {
 			return deletePhone(phone);
@@ -74,7 +73,7 @@ public class PhoneManager implements Serializable {
 		}
 	}
 
-	public Phone searchforPhoneById(String phoneId) {
+	public Phone searchForPhoneById(String phoneId) {
 
 		// Loop over (i.e. Iterate over) arrayList for Phone type elements in
 		// the phones ArrayList
@@ -147,7 +146,7 @@ public class PhoneManager implements Serializable {
 			br.readLine(); //discard first line of csv file
 			while ((record = br.readLine()) != null) {
 				String[] elements = record.split(",");
-				Student newStudent = new Phone(elements[0], elements[1], elements[2]);
+				Student newPhone = new Phone(elements[0], elements[1], elements[2]);
 				this.addPhone(newPhone);
 			}
 		} catch (FileNotFoundException e) {
@@ -169,16 +168,16 @@ public class PhoneManager implements Serializable {
 	}
 	
 	public PhoneManager loadDB(String dbPath){
-    	PhoneManager pm = null;
+    	PhoneManager p = null;
     	try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbPath));
-			pm = (PhoneManager) in.readObject();
+			p = (PhoneManager) in.readObject();
     		in.close();
     	} catch (Exception e) {
     		System.out.print("[Error] Cannont load DB. Cause: ");
     		e.printStackTrace();
     	}
-		return pm;
+		return p;
     }
 
 }
