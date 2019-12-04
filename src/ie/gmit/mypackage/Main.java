@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class Main extends Application implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    PhoneManager p = new PhoneManager(); 
+    PhoneManager pm = new PhoneManager(); 
 
     @Override
     public void start(Stage primaryStage) {
@@ -27,22 +27,17 @@ public class Main extends Application implements Serializable {
         taMyOutput.setPrefHeight(100); // sets height of the TextArea to 400 pixels
         taMyOutput.setPrefWidth(100); // sets width of the TextArea to 300 pixels
 
-        // Show phones
+        // Show total number of phones
         Button btnShowTotal = new Button("Show Phone");
-        TextField tfTotalNumberOfPhones = new TextField(java.awt);
-
-        tfTotalNumberOfPhone.setEditable(false); // This box is not editable. Only displays result.
-        tfTotalNumberOfPhone.setPromptText("0");
-
+        TextField tfTotalNumberOfPhones = new TextField();
+        
+        tfTotalNumberOfPhones.setPromptText("0");
+        tfTotalNumberOfPhones.setEditable(false); // This box is not editable. Only displays result.
+      
         btnShowTotal.setOnAction(e -> {
-
-          
-            tfTotalPhoneModels.setText(Integer.toString(sm.findPhoneModels()));
-
+            tfTotalNumberOfPhones.setText("hELLO");
         });
 
-
- 
         // Add Phone
 
         Button btnAddPhone = new Button("Add Phone");
@@ -56,17 +51,14 @@ public class Main extends Application implements Serializable {
 
 
         btnAddPhone.setOnAction(e -> {
-            if (tfPhoneID.getText().trim().equals("")) { // If text field is empty
-               
+            if (tfPhoneID.getText().trim().equals("")) { // If text field is empty           
                 taMyOutput.setText("Invalid");
             } else {
-
-                Phone phone = new Phone(tfphoneID.getText(), tfPhoneModel.getText(), tfPhonePrice());
-                pm.addPhone(Phone); // Add phone to list
+                Phone phone = new Phone(tfPhoneID.getText(), tfPhoneModel.getText(), tfPhonePrice.getText());
+                pm.addPhone(phone); // Add phone to list
                 tfPhoneID.clear();
                 tfPhoneModel.clear();
-                tfPhonePrice.clear();
-                
+                tfPhonePrice.clear();               
             }
         });
 
@@ -83,13 +75,13 @@ public class Main extends Application implements Serializable {
         });
 
         // Search for phone by ID
-        TexField tfPhoneSearch = new TextField();
+        TextField tfPhoneSearch = new TextField();
         Button btnPhoneSearch = new Button("Search Phone By ID");
        
         tfPhoneSearch.setPromptText("Search Phone ID");
         btnPhoneSearch.setOnAction(e -> {
 
-            Phone phoneObject = p.searchForPhoneById(tfPhoneSearch.getText());
+            Phone phoneObject = pm.searchForPhoneById(tfPhoneSearch.getText());
             taMyOutput.setText(phoneObject.getPhoneModel() + " " + phoneObject.getPhonePrice());
 
         });
@@ -100,11 +92,11 @@ public class Main extends Application implements Serializable {
         Button btnSaveDB = new Button ("Save Phone to DB");
         btnSaveDB.setOnAction(e -> {
         
-            if (p.findTotalPhone() > 0) {
+            if (pm.findTotalPhones() > 0) {
                 try {
                     File phoneDB = new File("./resources/phoneDB.ser");
                     ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(phoneDB));
-                    out.writeObject(sm);
+                    out.writeObject(pm);
                     out.close();
                     taMyOutput.setText("Phone Database Saved");
                 } catch (Exception exception) {
@@ -127,7 +119,7 @@ public class Main extends Application implements Serializable {
        try {
               File phoneDB = new File("./resources/phoneDB.ser");
                     ObjectInputStream in = new ObjectInputStream(new FileInputStream(phoneDB));
-                 p = (PhoneManager) in.readObject();
+                 pm = (PhoneManager) in.readObject();
                     in.close();
                     taMyOutput.setText("Phone Database Loaded");
 
@@ -152,18 +144,18 @@ public class Main extends Application implements Serializable {
         // Adding and arranging all the nodes in the grid - add(node, column, row)
         GridPane gridPane1 = new GridPane();
         gridPane1.add(tfPhoneID, 0, 0);
-        gridPane.add(tfPhoneModel, 1, 0);
-        gridPane.add(tfPhonePrice, 2, 0);
+        gridPane1.add(tfPhoneModel, 1, 0);
+        gridPane1.add(tfPhonePrice, 2, 0);
         gridPane1.add(btnAddPhone, 3, 0);   
         gridPane1.add(btnShowTotal, 0, 1);
-        gridPane1.add(tfPhoneModels, 1, 1);
+        gridPane1.add(tfPhoneModel, 1, 1);
         gridPane1.add(tfPhoneDel, 0, 2);
         gridPane1.add(btnDelPhone, 1, 2);
-        gridPane.add(tfPhoneSearch, 0, 3);
-        gridPane.add(btnPhonSearch, 1, 3);
+        gridPane1.add(tfPhoneSearch, 0, 3);
+        gridPane1.add(btnPhoneSearch, 1, 3);
         gridPane1.add(btnSaveDB, 0, 4);
         gridPane1.add(btnLoadDB, 0, 5);
-        gridPane1.add(tfLoadPhone, 1, 5);
+		gridPane1.add(tfLoadPhones, 1, 5);
         gridPane1.add(taMyOutput, 0, 6, 2, 1);
         gridPane1.add(btnQuit, 0, 7);
        
